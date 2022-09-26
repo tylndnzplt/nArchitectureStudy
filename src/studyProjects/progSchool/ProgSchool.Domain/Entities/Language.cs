@@ -18,8 +18,9 @@ namespace ProgSchool.Domain.Entities
 
         public Language(int id, string name):this()
         {
-            Id = id; 
+
             Name = name;
+
         }
     }
 }
