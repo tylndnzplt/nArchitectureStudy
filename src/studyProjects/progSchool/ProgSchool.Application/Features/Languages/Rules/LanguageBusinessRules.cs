@@ -29,6 +29,7 @@ namespace ProgSchool.Application.Features.Languages.Rules
         public void BrandShouldExistWhenRequested(Language? language)
         {
             if (language == null) throw new BusinessException("Requested brand does not exist");
+
         }
     }
 }
