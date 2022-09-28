@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using Core.Application.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgSchool.Application.Features.Languages.Commands.CreateLanguage;
 using ProgSchool.Application.Features.Languages.Dtos;
-
+using ProgSchool.Application.Features.Languages.Models;
+using ProgSchool.Application.Features.Languages.Queries.GetListLanguage;
 
 namespace ProgSchool.WebAPI.Controllers
 {
@@ -20,6 +22,13 @@ namespace ProgSchool.WebAPI.Controllers
             return Created("", result);
         }
 
-       
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetListLanguageQuery getListLanguageQuery = new() { PageRequest = pageRequest };
+            LanguageListModel result = await Mediator.Send(getListLanguageQuery);
+
+            return Ok(result);
+        }
     }
 }

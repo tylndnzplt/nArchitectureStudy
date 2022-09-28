@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ProgSchool.Application.Features.Languages.Dtos;
+using ProgSchool.Application.Features.Languages.Rules;
 using ProgSchool.Application.Services.Repositories;
 using ProgSchool.Domain.Entities;
 using System;
@@ -19,16 +20,18 @@ namespace ProgSchool.Application.Features.Languages.Commands.CreateLanguage
         {
             private readonly ILanguageRepository _languageRepository;
             private readonly IMapper _mapper;
+            private readonly LanguageBusinessRules _languageBusinessRules;
 
-
-            public CreateLanguageCommandHandler(ILanguageRepository languageRepository, IMapper mapper)
+            public CreateLanguageCommandHandler(ILanguageRepository languageRepository, IMapper mapper, LanguageBusinessRules languageBusinessRules)
             {
                 _languageRepository = languageRepository;
                 _mapper = mapper;
+                _languageBusinessRules = languageBusinessRules;
             }
 
             public async Task<CreatedLanguageDto> Handle(CreateLanguageCommand request, CancellationToken cancellationToken)
             {
+                await _languageBusinessRules.LanguageNameCanNotBeDuplicatedWhenInserted(request.Name);
 
                 Language language = _mapper.Map<Language>(request);
                 Language createdLanguage = await _languageRepository.AddAsync(language);

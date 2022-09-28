@@ -5,6 +5,7 @@ using Core.Application.Pipelines.Validation;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using ProgSchool.Application.Features.Languages.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,9 @@ namespace ProgSchool.Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
+            services.AddScoped<LanguageBusinessRules>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheRemovingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             return services;
