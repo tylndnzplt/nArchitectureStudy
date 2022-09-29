@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Persistence.Paging;
 using ProgSchool.Application.Features.Languages.Commands.CreateLanguage;
+using ProgSchool.Application.Features.Languages.Commands.UpdateLanguage;
 using ProgSchool.Application.Features.Languages.Dtos;
 using ProgSchool.Application.Features.Languages.Models;
 using ProgSchool.Domain.Entities;
@@ -21,6 +22,13 @@ namespace ProgSchool.Application.Features.Languages.Profiles
 
             CreateMap<IPaginate<Language>, LanguageListModel>().ReverseMap();
             CreateMap<Language, LanguageListDto>().ReverseMap();
+
+            CreateMap<Language, LanguageGetByIdDto>().ReverseMap();
+            
+            CreateMap<Language, DeletedLanguageDto>().ReverseMap();
+
+            CreateMap<Language, UpdateLanguageCommand>().ReverseMap();
+            CreateMap<Language, UpdatedLanguageCommandDto>().ReverseMap();
         }
     }
 }

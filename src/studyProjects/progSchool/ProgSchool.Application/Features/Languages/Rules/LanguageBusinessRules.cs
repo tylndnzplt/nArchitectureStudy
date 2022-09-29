@@ -20,13 +20,13 @@ namespace ProgSchool.Application.Features.Languages.Rules
             _languageRepository = languageRepository;
         }
 
-        public async Task LanguageNameCanNotBeDuplicatedWhenInserted(string name)
+        public async Task LanguageNameCanNotBeDuplicatedWhenInsertedOrUpdated(string name)
         {
             IPaginate<Language> result = await _languageRepository.GetListAsync(l => l.Name.ToLower() == name.ToLower());
             if (result.Items.Any()) throw new BusinessException($"{name} exists.");
         }
 
-        public void BrandShouldExistWhenRequested(Language? language)
+        public void LanguageShouldExistWhenRequested(Language? language)
         {
             if (language == null) throw new BusinessException("Requested brand does not exist");
 

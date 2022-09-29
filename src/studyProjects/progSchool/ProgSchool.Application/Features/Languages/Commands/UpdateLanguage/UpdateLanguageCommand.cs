@@ -10,33 +10,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProgSchool.Application.Features.Languages.Commands.CreateLanguage
+namespace ProgSchool.Application.Features.Languages.Commands.UpdateLanguage
 {
-    public class CreateLanguageCommand:IRequest<CreatedLanguageDto>
+    public class UpdateLanguageCommand:IRequest<UpdatedLanguageCommandDto>
     {
+        public int Id { get; set; }
         public string Name { get; set; }
 
-        public class CreateLanguageCommandHandler : IRequestHandler<CreateLanguageCommand, CreatedLanguageDto>
+        public class UpdatedLanguageCommandHandler:IRequestHandler<UpdateLanguageCommand, UpdatedLanguageCommandDto>
         {
             private readonly ILanguageRepository _languageRepository;
             private readonly IMapper _mapper;
             private readonly LanguageBusinessRules _languageBusinessRules;
 
-            public CreateLanguageCommandHandler(ILanguageRepository languageRepository, IMapper mapper, LanguageBusinessRules languageBusinessRules)
+            public UpdatedLanguageCommandHandler(ILanguageRepository languageRepository, IMapper mapper, LanguageBusinessRules languageBusinessRules)
             {
                 _languageRepository = languageRepository;
                 _mapper = mapper;
                 _languageBusinessRules = languageBusinessRules;
             }
 
-            public async Task<CreatedLanguageDto> Handle(CreateLanguageCommand request, CancellationToken cancellationToken)
+            public async Task<UpdatedLanguageCommandDto> Handle(UpdateLanguageCommand request, CancellationToken cancellationToken)
             {
                 await _languageBusinessRules.LanguageNameCanNotBeDuplicatedWhenInsertedOrUpdated(request.Name);
 
                 Language language = _mapper.Map<Language>(request);
-                Language createdLanguage = await _languageRepository.AddAsync(language);
-                CreatedLanguageDto createdLanguageDto = _mapper.Map<CreatedLanguageDto>(createdLanguage);
-                return createdLanguageDto;
+                Language updatedLanguage = await _languageRepository.UpdateAsync(language);
+
+                UpdatedLanguageCommandDto updatedLanguageCommandDto = _mapper.Map<UpdatedLanguageCommandDto>(updatedLanguage);
+                return updatedLanguageCommandDto;
             }
         }
     }
