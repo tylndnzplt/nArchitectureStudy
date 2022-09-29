@@ -32,9 +32,12 @@ namespace ProgSchool.Application.Features.Languages.Commands.UpdateLanguage
 
             public async Task<UpdatedLanguageCommandDto> Handle(UpdateLanguageCommand request, CancellationToken cancellationToken)
             {
+                Language language = await _languageRepository.GetAsync(l => l.Id == request.Id);
+
+                _languageBusinessRules.LanguageShouldExistWhenRequested(language);
                 await _languageBusinessRules.LanguageNameCanNotBeDuplicatedWhenInsertedOrUpdated(request.Name);
 
-                Language language = _mapper.Map<Language>(request);
+                language.Name = request.Name;
                 Language updatedLanguage = await _languageRepository.UpdateAsync(language);
 
                 UpdatedLanguageCommandDto updatedLanguageCommandDto = _mapper.Map<UpdatedLanguageCommandDto>(updatedLanguage);
